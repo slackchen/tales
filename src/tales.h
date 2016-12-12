@@ -9,7 +9,7 @@
 #endif
 
 #include <cassert>
-#define tassert assert
+#define tales_assert assert
 
 #include <cstring>
 #include <memory>

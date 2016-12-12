@@ -27,17 +27,13 @@ namespace Tales
 
 
 		String::~String()
-		{
+		{		
 			delete str;
 		}
 
 		void String::initWithString(const char* instr)
 		{
-			if (nullptr == instr)
-			{
-				str = "";
-				return;
-			}
+			tales_assert(instr != nullptr);
 
 			int size = strlen(instr);
 			int allocSize = (size + 1) + (4 - 1) & ~(4 - 1);
@@ -73,7 +69,7 @@ namespace Tales
 
 		char String::operator[](int index) const
 		{
-			tassert(index >= 0 && index < Length());
+			tales_assert(index >= 0 && index < Length());
 			return str[index];
 		}
 
