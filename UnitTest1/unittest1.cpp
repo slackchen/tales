@@ -61,6 +61,11 @@ namespace UnitTest1
 
 			list.removeAll();
 			list.printAll();
+
+			Array<String> strs = { "abc", "def", "123" };
+			Assert::IsTrue(strs[0] == "abc");
+			Assert::IsTrue(strs[1] == "def");
+			Assert::IsTrue(strs[2] == "123");
 		}
 
 		String foo()

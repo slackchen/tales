@@ -54,6 +54,11 @@ void testArray()
 
 	list.removeAll();
 	list.printAll();
+
+	Array<String> strs = { "abc", "def", "123" };
+	String str1 = strs[0];
+	String str2 = strs[1];
+	String str3 = strs[2];
 }
 
 int main()

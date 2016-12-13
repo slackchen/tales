@@ -9,12 +9,13 @@ namespace Tales
 		{
 		public:
 			Array();
+			Array(const Array& rhs);
 			Array(const std::initializer_list<T>& list);
 			~Array();
 
 			int num() const;
 
-			//Array& assign(const Array& rhs);
+			Array& assign(const Array& rhs);
 
 			void add(const T& elem);
 			void removeAt(int index);
@@ -23,6 +24,7 @@ namespace Tales
 			void resize(int size);
 
 			const T& operator[](int index) const;
+			Array& operator=(const Array& rhs);
 
 			void printAll();
 

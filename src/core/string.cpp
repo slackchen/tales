@@ -3,8 +3,7 @@
 namespace Tales
 {
 	namespace Core
-	{
-		
+	{		
 		String::String()
 		{
 		}
@@ -92,7 +91,7 @@ namespace Tales
 			newStr.resize(copyCount);
 			memcpy(newStr.strData, strData + startIndex, sizeof(char) * copyCount);
 			newStr.strData[copyCount] = 0;
-			newStr.numOfStr = (int)strlen(newStr.strData);
+			newStr.numOfStr = copyCount;
 
 			return std::move(newStr);
 		}
@@ -137,7 +136,7 @@ namespace Tales
 			return std::move(newStr);
 		}
 
-		bool String::compare(const String & str)
+		bool String::compare(const String & str) const
 		{
 			if (numOfStr != str.numOfStr)
 				return false;
@@ -156,7 +155,7 @@ namespace Tales
 			return start == len && cur == searchLen;
 		}
 
-		bool String::compareLowercase(const String & str)
+		bool String::compareLowercase(const String & str) const
 		{
 			if (numOfStr != str.numOfStr)
 				return false;
@@ -235,7 +234,7 @@ namespace Tales
 		//	return String[]();
 		//}
 
-		int String::indexOf(const String & searchValue, int startIndex)
+		int String::indexOf(const String & searchValue, int startIndex) const
 		{
 			int len = length();
 			int searchLen = searchValue.length();
@@ -252,7 +251,7 @@ namespace Tales
 				cur = 0;
 
 				char ch = searchValue[cur];
-				while (strData[start] != ch)
+				while (start < len && strData[start] != ch)
 					start++;
 
 				pos = start;
@@ -269,7 +268,7 @@ namespace Tales
 			return NotFound;
 		}
 
-		int String::lastIndexOf(const String & searchValue, int startIndex)
+		int String::lastIndexOf(const String & searchValue, int startIndex) const
 		{
 			int len = length();
 			int searchLen = searchValue.length();
@@ -303,7 +302,12 @@ namespace Tales
 			return NotFound;
 		}
 
-		bool String::operator==(const String & str)
+		bool String::operator==(const char* str) const
+		{
+			return compare(str);
+		}
+
+		bool String::operator==(const String & str) const
 		{
 			return compare(str);
 		}

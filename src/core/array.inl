@@ -1,8 +1,4 @@
 #include "array.h"
-#include "array.h"
-#include "tales.h"
-#include "array.h"
-
 namespace Tales
 {
 	namespace Core
@@ -10,6 +6,12 @@ namespace Tales
 		template <class T>
 		Array<T>::Array()
 		{
+		}
+
+		template<class T>
+		inline Array<T>::Array(const Array & rhs)
+		{
+			assign(rhs);
 		}
 
 		template <class T>
@@ -34,9 +36,19 @@ namespace Tales
 		}
 
 		template<class T>
+		inline Array<T> & Array<T>::assign(const Array & rhs)
+		{
+			resize(rhs.num());
+			memcpy(elements, rhs.elements, sizeof(T) * numOfElem);
+
+			return *this;
+		}
+
+		template<class T>
 		void Array<T>::add(const T & elem)
 		{
 			resize(numOfElem + 1);
+			new(&elements[numOfElem])T;
 			elements[numOfElem] = elem;
 			numOfElem++;
 		}
@@ -53,10 +65,22 @@ namespace Tales
 				int allocSize = capSize * sizeof(T) + (16 - 1) & ~(16 - 1);
 				copyElems = (T*)new char[allocSize];
 
-				memcpy(copyElems, elements, sizeof(T) * index);
+				for (int i = 0; i < index; ++i)
+				{
+					new(&copyElems[i])T;
+					copyElems[i] = elements[i];
+				}
+				//memcpy(copyElems, elements, sizeof(T) * index);
 				int copyCount = numOfElem - index - 1;
 				if (copyCount > 0)
-					memcpy(copyElems + index, elements + index + 1, sizeof(T) * copyCount);
+				{
+					for (int i = index; i < index + copyCount; ++i)
+					{
+						new(&copyElems[i])T;
+						copyElems[i] = elements[i + 1];
+					}
+					//memcpy(copyElems + index, elements + index + 1, sizeof(T) * copyCount);
+				}
 				delete[] elements;
 				elements = copyElems;
 			}
@@ -65,7 +89,14 @@ namespace Tales
 				copyElems = elements;
 				int copyCount = numOfElem - index - 1;
 				if (copyCount > 0)
-					memcpy(copyElems + index, elements + index + 1, sizeof(T) * copyCount);
+				{
+					for (int i = index; i < index + copyCount; ++i)
+					{
+						new(&copyElems[i])T;
+						copyElems[i] = elements[i + 1];
+					}
+					//memcpy(copyElems + index, elements + index + 1, sizeof(T) * copyCount);
+				}
 			}
 
 			numOfElem--;
@@ -87,7 +118,12 @@ namespace Tales
 				capSize = size * 2;
 				int allocSize = capSize * sizeof(T) + (16 - 1) & ~(16 - 1);
 				T* newElems = (T*)new char[allocSize];
-				memcpy(newElems, elements, sizeof(T) * numOfElem);
+				for (int i = 0; i < numOfElem; ++i)
+				{
+					new(&newElems[i])T;
+					newElems[i] = elements[i];
+				}
+				//memcpy(newElems, elements, sizeof(T) * numOfElem);
 				delete[] elements;
 				elements = newElems;
 			}
@@ -98,6 +134,12 @@ namespace Tales
 		{
 			tales_assert(index >= 0 && index < numOfElem);
 			return elements[index];
+		}
+
+		template<class T>
+		inline Array<T> & Array<T>::operator=(const Array & rhs)
+		{
+			return assign(rhs);
 		}
 
 		template<class T>

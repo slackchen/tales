@@ -28,15 +28,16 @@ namespace Tales
 			static String stringWithString(const char* instr);
 			static String format(const char* format, ...);
 
-			bool compare(const String& str);
-			bool compareLowercase(const String& str);
+			bool compare(const String& str) const;
+			bool compareLowercase(const String& str) const;
 			String replace(const String& rep, const String& to);
 			//String[] split(const String& splitStr);
 
-			int indexOf(const String& searchValue, int startIndex = 0);
-			int lastIndexOf(const String& searchValue, int startIndex = 0);
+			int indexOf(const String& searchValue, int startIndex = 0) const;
+			int lastIndexOf(const String& searchValue, int startIndex = 0) const;
 
-			bool operator==(const String& str);
+			bool operator==(const char* str) const;
+			bool operator==(const String& str) const;
 			String& operator=(const String& str);
 			String& operator=(String&& str);
 			char operator[] (int index) const;
