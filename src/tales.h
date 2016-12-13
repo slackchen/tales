@@ -11,8 +11,18 @@
 #include <cassert>
 #define tales_assert assert
 
+#ifndef TALES_EXPORT
+#define TALES_API //__declspec(dllimport)
+#else
+#define TALES_API //__declspec(dllexport)
+#endif
+
+#pragma warning(disable:4217)
+
 #include <cstring>
 #include <memory>
+#include <cstdarg>
+#include <ctype.h>
 
 // tales classes
 #include "core/object.h"

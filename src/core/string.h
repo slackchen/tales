@@ -4,29 +4,50 @@ namespace Tales
 {
 	namespace Core
 	{
-		class String : public Object
+		class TALES_API String : public Object
 		{
 		public:
-			const int NotFound = -1;
+			static const int NotFound = -1;
 
 			String();
-			String(const char* str);
+			String(const char* instr);
 			String(const String& str);
 			String(String&& str);
 			~String();
 
-			void initWithString(const char* instr);
-			String& operator=(const String& str);
-			String& operator=(String&& str);
+			void resize(int size);
+			int length() const;
 
-			int Length() const;
+			String& initWithString(const char* instr);
+			String& assign(const String& str);
+			String& assign(String&& str);
+			String substr(int startIndex, int count = -1);
+			String concat(const String& str);
+			const char* str() const;
 
-			char operator[] (int index) const;
+			static String stringWithString(const char* instr);
+			static String format(const char* format, ...);
+
+			bool compare(const String& str);
+			bool compareLowercase(const String& str);
+			String replace(const String& str, const String& repto);
+			//String[] split(const String& splitStr);
 
 			int indexOf(const String& searchValue, int startIndex = 0);
+			int lastIndexOf(const String& searchValue, int startIndex = 0);
+
+			bool operator==(const String& str);
+			String& operator=(const String& str);
+			String& operator=(String&& str);
+			char operator[] (int index) const;
+
+			String operator+(const String& str);
+			String operator+(const char* str);
+			friend String operator+(const char* str1, const String& str2);
 
 		private:
-			char* str;
+			char* strData = nullptr;
+			int numOfStr = 0;
 		};
 	}
 }

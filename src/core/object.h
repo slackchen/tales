@@ -4,7 +4,7 @@ namespace Tales
 {
 	namespace Core
 	{
-		class Object
+		class TALES_API Object
 		{
 		public:
 			Object();
