@@ -1,5 +1,4 @@
 #include "tales.h"
-#include "string.h"
 
 namespace Tales
 {
@@ -27,7 +26,7 @@ namespace Tales
 
 		String::~String()
 		{		
-			delete strData;
+			delete[] strData;
 			numOfStr = 0;
 		}
 
@@ -35,7 +34,7 @@ namespace Tales
 		{
 			tales_assert(size > 0);
 
-			delete strData;
+			delete[] strData;
 			numOfStr = 0;
 			int allocSize = size + 1 + (4 - 1) & ~(4 - 1);
 			strData = new char[allocSize];
@@ -339,6 +338,6 @@ namespace Tales
 		{
 			return std::move(String(str1).concat(str2));
 		}
-}
+	}
 }
 

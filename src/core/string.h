@@ -30,7 +30,7 @@ namespace Tales
 
 			bool compare(const String& str);
 			bool compareLowercase(const String& str);
-			String replace(const String& str, const String& repto);
+			String replace(const String& rep, const String& to);
 			//String[] split(const String& splitStr);
 
 			int indexOf(const String& searchValue, int startIndex = 0);

@@ -42,6 +42,27 @@ namespace UnitTest1
 			Assert::AreEqual(test.str(), "abc");
 		}
 
+		TEST_METHOD(TestArray)
+		{
+			Array<int> list = { 4, 5, 6 };
+			Assert::IsTrue(list[0] == 4 && list[1] == 5 && list[2] == 6);
+
+			list.add(1);
+			list.add(2);
+			list.add(3);
+			Assert::IsTrue(list[3] == 1 && list[4] == 2 && list[5] == 3);
+
+			list.printAll();
+			
+			list.removeAt(1);
+			Assert::IsTrue(list[0] == 4 && list[1] == 6 && list[2] == 1);
+
+			list.printAll();
+
+			list.removeAll();
+			list.printAll();
+		}
+
 		String foo()
 		{
 			return std::move(String("abc"));

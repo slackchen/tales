@@ -17,8 +17,7 @@
 #define TALES_API //__declspec(dllexport)
 #endif
 
-#pragma warning(disable:4217)
-
+#include <iostream>
 #include <cstring>
 #include <memory>
 #include <cstdarg>
@@ -26,5 +25,6 @@
 
 // tales classes
 #include "core/object.h"
+#include "core/array.h"
 #include "core/string.h"
 

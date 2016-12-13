@@ -27,11 +27,11 @@
     <ClInclude Include="src\core\string.h">
       <Filter>src\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\array.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\object.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
@@ -41,5 +41,10 @@
     <ClCompile Include="src\core\string.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\core\array.inl">
+      <Filter>src\core</Filter>
+    </None>
   </ItemGroup>
 </Project>

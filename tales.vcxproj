@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\array.h" />
     <ClInclude Include="src\core\object.h" />
     <ClInclude Include="src\core\string.h" />
     <ClInclude Include="src\platform\win32\platform.h" />
@@ -156,13 +157,15 @@
   <ItemGroup>
     <ClCompile Include="src\core\object.cpp" />
     <ClCompile Include="src\core\string.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\tales.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\core\array.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

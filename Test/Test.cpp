@@ -31,9 +31,36 @@ void testString()
 	String test = foo();
 }
 
+void testArray()
+{
+	Array<int> list = {4, 5, 6};
+	list.add(1);
+	list.add(2);
+	list.add(3);
+	list.add(4);
+	list.add(5);
+	list.add(6);
+	list.printAll();
+	list.removeAt(1);
+	list.printAll();
+
+	list.removeAt(0);
+	list.removeAt(0);
+	list.removeAt(0);
+	list.removeAt(0);
+	list.removeAt(0);
+	list.removeAt(0);
+	list.printAll();
+
+	list.removeAll();
+	list.printAll();
+}
+
 int main()
 {
 	testString();
+
+	testArray();
 
 	return 0;
 }
