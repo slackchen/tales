@@ -6,6 +6,7 @@ namespace Tales
 	{		
 		String::String()
 		{
+			initWithString("");
 		}
 
 		String::String(const char * instr)
@@ -26,12 +27,13 @@ namespace Tales
 		String::~String()
 		{		
 			delete[] strData;
+			strData = nullptr;
 			numOfStr = 0;
 		}
 
 		void String::resize(int size)
 		{
-			tales_assert(size > 0);
+			//tales_assert(size > 0);
 
 			delete[] strData;
 			numOfStr = 0;
@@ -63,15 +65,17 @@ namespace Tales
 
 		String & String::assign(const String & str)
 		{
-			this->strData = str.strData;
-			this->numOfStr = str.numOfStr;
+			delete[] strData;
+			strData = str.strData;
+			numOfStr = str.numOfStr;
 			return *this;
 		}
 
 		String & String::assign(String && str)
 		{
-			this->strData = str.strData;
-			this->numOfStr = str.numOfStr;
+			delete[] strData;
+			strData = str.strData;
+			numOfStr = str.numOfStr;
 			str.strData = nullptr;
 			str.numOfStr = 0;
 
@@ -220,19 +224,44 @@ namespace Tales
 			return std::move(newStr);
 		}
 
-		//String[] String::split(const String & splitStr)
-		//{
-		//	int pos = 0;
-		//	int spLen = splitStr.length();
+		Array<String> String::split(const String & splitStr)
+		{
+			Array<String> strs;
 
-		//	pos = indexOf(splitStr, pos);
-		//	while (pos != String::NotFound)
-		//	{
-		//		count++;
-		//		pos = indexOf(splitStr, pos + spLen);
-		//	}
-		//	return String[]();
-		//}
+			int pos = 0;
+			int spLen = splitStr.length();			
+			int copyPos = 0;
+
+			pos = indexOf(splitStr, pos);
+			while (pos != String::NotFound)
+			{
+				int copyLen = pos - copyPos;
+
+				{
+					String& newStr = strs.addnew();
+					newStr.resize(copyLen);
+					memcpy(newStr.strData, strData + copyPos, sizeof(char) * copyLen);
+					newStr.strData[copyLen] = 0;
+					newStr.numOfStr = copyLen;
+					copyPos += copyLen + spLen;
+				}
+
+				pos = indexOf(splitStr, pos + spLen);
+				if (pos == String::NotFound)
+				{					
+					{
+						String& newStr = strs.addnew();
+						int len = length() - copyPos;
+						newStr.resize(len);
+						memcpy(newStr.strData, strData + copyPos, sizeof(char) * len);
+						newStr.strData[len] = 0;
+						newStr.numOfStr = len;
+					}
+				}
+			}
+
+			return std::move(strs);
+		}
 
 		int String::indexOf(const String & searchValue, int startIndex) const
 		{
@@ -263,7 +292,7 @@ namespace Tales
 			}
 
 			if (cur == searchLen)
-				return pos - startIndex;
+				return pos;
 
 			return NotFound;
 		}
@@ -297,7 +326,7 @@ namespace Tales
 			}
 
 			if (cur == searchLen)
-				return pos - startIndex;
+				return pos;
 
 			return NotFound;
 		}
@@ -342,6 +371,11 @@ namespace Tales
 		{
 			return std::move(String(str1).concat(str2));
 		}
+		std::ostream & operator<<(std::ostream & os, const String & str)
+		{
+			return os << str.str();
+		}
+
 	}
 }
 

@@ -6,7 +6,7 @@
 
 using namespace Tales::Core;
 
-String foo()
+String fooStr()
 {
 	return std::move(String("abc"));
 }
@@ -28,7 +28,12 @@ void testString()
 
 	str = str.replace("cde", "dc");
 
-	String test = foo();
+	String test = fooStr();
+}
+
+Array<String> fooArray()
+{
+	return std::move(Array<String>({ "abc", "def", "123" }));
 }
 
 void testArray()
@@ -59,6 +64,17 @@ void testArray()
 	String str1 = strs[0];
 	String str2 = strs[1];
 	String str3 = strs[2];
+
+	Array<String> test = fooArray();
+
+	test = std::move(Array<String>({ "abc", "def", "123" }));
+	
+	String& str = strs.addnew();
+	bool ret = str == "";
+	str = strs.addnew();
+
+	strs = String("abc,def,123").split(",");
+	strs.printAll();
 }
 
 int main()

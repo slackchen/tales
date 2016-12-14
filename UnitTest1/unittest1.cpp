@@ -12,6 +12,11 @@ namespace UnitTest1
 	{
 	public:
 		
+		String fooStr()
+		{
+			return std::move(String("abc"));
+		}
+
 		TEST_METHOD(TestString)
 		{
 			// TODO: Your test code here
@@ -38,8 +43,13 @@ namespace UnitTest1
 			str = str.replace("cde", "dc");
 			Assert::AreEqual(str.str(), "abdcfg");
 
-			String test = foo();
+			String test = fooStr();
 			Assert::AreEqual(test.str(), "abc");
+		}
+
+		Array<String> fooArray()
+		{
+			return std::move(Array<String>({ "abc", "def", "123" }));
 		}
 
 		TEST_METHOD(TestArray)
@@ -66,12 +76,28 @@ namespace UnitTest1
 			Assert::IsTrue(strs[0] == "abc");
 			Assert::IsTrue(strs[1] == "def");
 			Assert::IsTrue(strs[2] == "123");
-		}
 
-		String foo()
-		{
-			return std::move(String("abc"));
-		}
+			Array<String> movedStrs = Array<String>({ "abc", "def", "123" });
+			Assert::IsTrue(movedStrs[0] == "abc");
+			Assert::IsTrue(movedStrs[1] == "def");
+			Assert::IsTrue(movedStrs[2] == "123");
 
+			Array<String> test = std::move(Array<String>({ "abc", "def", "123" }));
+			Assert::IsTrue(test[0] == "abc");
+			Assert::IsTrue(test[1] == "def");
+			Assert::IsTrue(test[2] == "123");
+
+			test = fooArray();
+
+			String& str = strs.addnew();
+			Assert::IsTrue(str == "");
+			str = strs.addnew();
+			Assert::IsTrue(str == "");
+
+			strs = String("abc,def,123").split(",");
+			Assert::IsTrue(strs[0] == "abc");
+			Assert::IsTrue(strs[1] == "def");
+			Assert::IsTrue(strs[2] == "123");
+		}
 	};
 }

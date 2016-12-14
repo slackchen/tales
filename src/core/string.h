@@ -31,7 +31,7 @@ namespace Tales
 			bool compare(const String& str) const;
 			bool compareLowercase(const String& str) const;
 			String replace(const String& rep, const String& to);
-			//String[] split(const String& splitStr);
+			Array<String> split(const String& splitStr);
 
 			int indexOf(const String& searchValue, int startIndex = 0) const;
 			int lastIndexOf(const String& searchValue, int startIndex = 0) const;
@@ -45,6 +45,7 @@ namespace Tales
 			String operator+(const String& str);
 			String operator+(const char* str);
 			friend String operator+(const char* str1, const String& str2);
+			friend std::ostream& operator<<(std::ostream& os, const String& str);
 
 		private:
 			char* strData = nullptr;
