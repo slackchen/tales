@@ -22,9 +22,12 @@ namespace Tales
 		template <class T>
 		Array<T>::Array(const std::initializer_list<T>& list)
 		{
+			resize(list.size());
+			int i = 0;
 			for (const T& elem : list)
 			{
-				add(elem);
+				elements[i] = elem;
+				i++;
 			}
 		}
 
@@ -93,27 +96,42 @@ namespace Tales
 			tales_assert(index >= 0 && index < numOfElem);
 
 			T* copyElems = nullptr;
-			if (numOfElem - 1 < capSize / 4)
+			if (numOfElem - 1 > 0 && numOfElem - 1 < capSize / 4)
 			{
 				capSize /= 4;
 				int allocSize = capSize * sizeof(T) + (16 - 1) & ~(16 - 1);
 				copyElems = (T*)new char[allocSize];
 
-				for (int i = 0; i < index; ++i)
+				if (std::is_pod<T>::value)
 				{
-					new(&copyElems[i])T;
-					copyElems[i] = elements[i];
+					memcpy(copyElems, elements, sizeof(T) * index);
+				}
+				else
+				{
+					for (int i = 0; i < index; ++i)
+					{
+						new(&copyElems[i])T;
+						copyElems[i] = elements[i];
+					}
 				}
 				
 				int copyCount = numOfElem - index - 1;
 				if (copyCount > 0)
 				{
-					for (int i = index; i < index + copyCount; ++i)
+					if (std::is_pod<T>::value)
 					{
-						new(&copyElems[i])T;
-						copyElems[i] = elements[i + 1];
+						memcpy(copyElems + index, elements + index + 1, sizeof(T) * copyCount);
+					}
+					else
+					{
+						for (int i = index; i < index + copyCount; ++i)
+						{
+							new(&copyElems[i])T;
+							copyElems[i] = elements[i + 1];
+						}
 					}
 				}
+
 				delete[] elements;
 				elements = copyElems;
 			}
@@ -123,10 +141,17 @@ namespace Tales
 				int copyCount = numOfElem - index - 1;
 				if (copyCount > 0)
 				{
-					for (int i = index; i < index + copyCount; ++i)
+					if (std::is_pod<T>::value)
 					{
-						new(&copyElems[i])T;
-						copyElems[i] = elements[i + 1];
+						memcpy(copyElems + index, elements + index + 1, sizeof(T) * copyCount);
+					}
+					else
+					{
+						for (int i = index; i < index + copyCount; ++i)
+						{
+							new(&copyElems[i])T;
+							copyElems[i] = elements[i + 1];
+						}
 					}
 				}
 			}
@@ -152,14 +177,19 @@ namespace Tales
 				int allocSize = capSize * sizeof(T) + (16 - 1) & ~(16 - 1);
 				T* newElems = (T*)new char[allocSize];
 
-				for (int i = 0; i < size; ++i)
+				if (std::is_pod<T>::value)
 				{
-					new(&newElems[i])T;
+					memcpy(newElems, elements, sizeof(T) * numOfElem);
 				}
-
-				for (int i = 0; i < numOfElem; ++i)
+				else
 				{
-					newElems[i] = elements[i];
+					for (int i = 0; i < size; ++i)
+					{
+						new(&newElems[i])T;
+
+						if (i < numOfElem)
+							newElems[i] = elements[i];
+					}
 				}
 
 				delete[] elements;

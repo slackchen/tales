@@ -18,10 +18,9 @@
 #endif
 
 #include <iostream>
-#include <cstring>
 #include <memory>
+#include <cstdlib>
 #include <cstdarg>
-#include <ctype.h>
 
 // tales classes
 #include "core/object.h"

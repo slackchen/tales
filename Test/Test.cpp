@@ -65,6 +65,10 @@ void testArray()
 	String str2 = strs[1];
 	String str3 = strs[2];
 
+	strs.removeAt(0);
+	strs.removeAt(0);
+	strs.removeAt(0);
+
 	Array<String> test = fooArray();
 
 	test = std::move(Array<String>({ "abc", "def", "123" }));

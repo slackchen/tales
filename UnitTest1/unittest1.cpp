@@ -6,6 +6,8 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Tales::Core;
 
+#include <vector>
+
 namespace UnitTest1
 {		
 	TEST_CLASS(UnitTest1)
@@ -98,6 +100,37 @@ namespace UnitTest1
 			Assert::IsTrue(strs[0] == "abc");
 			Assert::IsTrue(strs[1] == "def");
 			Assert::IsTrue(strs[2] == "123");
+
+			strs.removeAt(0);
+			strs.removeAt(0);
+			strs.removeAt(0);
+
+			Array<int> intlist;
+			for (int i = 0; i < 10000; ++i)
+				intlist.add(i);
+			for (int i = 0; i < 10000; ++i)
+				intlist.removeAt(0);
+
+			Array<String> strlist;
+			for (int i = 0; i < 100; ++i)
+				strlist.add("abc");
+			for (int i = 0; i < 100; ++i)
+				strlist.removeAt(0);
+		}
+
+		TEST_METHOD(TestStdVector)
+		{
+			std::vector<int> intlist;
+			for (int i = 0; i < 10000; ++i)
+				intlist.push_back(i);
+			for (int i = 0; i < 10000; ++i)
+				intlist.erase(intlist.begin() + 0);
+
+			std::vector<std::string> strlist;
+			for (int i = 0; i < 100; ++i)
+				strlist.push_back("abc");
+			for (int i = 0; i < 100; ++i)
+				strlist.erase(strlist.begin() + 0);
 		}
 	};
 }
