@@ -79,6 +79,12 @@ void testArray()
 
 	strs = String("abc,def,123").split(",");
 	strs.printAll();
+
+	Array<int> intlist;
+	for (int i = 0; i < 10000; ++i)
+		intlist.add(i);
+	for (int i = 0; i < 10000; ++i)
+		intlist.removeAt(0);
 }
 
 int main()

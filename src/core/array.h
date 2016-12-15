@@ -36,6 +36,7 @@ namespace Tales
 			T* elements = nullptr;
 			int numOfElem = 0;
 			int capSize = 0;
+			int begin = 0;
 		};
 	}
 }

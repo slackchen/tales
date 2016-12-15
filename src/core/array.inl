@@ -1,10 +1,12 @@
+#include "array.h"
 namespace Tales
 {
 	namespace Core
 	{
 		template <class T>
-		Array<T>::Array()
+		inline Array<T>::Array()
 		{
+			
 		}
 
 		template<class T>
@@ -20,7 +22,7 @@ namespace Tales
 		}
 
 		template <class T>
-		Array<T>::Array(const std::initializer_list<T>& list)
+		inline Array<T>::Array(const std::initializer_list<T>& list)
 		{
 			resize(list.size());
 			int i = 0;
@@ -33,16 +35,13 @@ namespace Tales
 
 
 		template <class T>
-		Array<T>::~Array()
+		inline Array<T>::~Array()
 		{
-			delete[] elements;
-			elements = nullptr;
-			numOfElem = 0;
-			capSize = 0;
+			removeAll();
 		}
 
 		template<class T>
-		int Array<T>::num() const
+		inline int Array<T>::num() const
 		{
 			return numOfElem;
 		}
@@ -54,7 +53,7 @@ namespace Tales
 			resize(num);
 
 			for (int i = 0; i < num; ++i)
-				elements[i] = rhs.elements[i];
+				elements[i] = rhs.elements[rhs.i];
 
 			return *this;
 		}
@@ -62,41 +61,43 @@ namespace Tales
 		template<class T>
 		inline Array<T> & Array<T>::assign(Array && rhs)
 		{
-			delete[] elements;
+			delete[] (elements - begin);
 			elements = rhs.elements;
 			numOfElem = rhs.numOfElem;
 			capSize = rhs.capSize;
+			begin = rhs.begin;
 
 			rhs.elements = nullptr;
 			rhs.numOfElem = 0;
 			rhs.capSize = 0;
+			rhs.begin = 0;
 
 			return *this;
 		}
 
 		template<class T>
-		void Array<T>::add(const T & elem)
+		inline void Array<T>::add(const T & elem)
 		{
-			resize(numOfElem + 1);
-			new(&elements[numOfElem - 1])T;
-			elements[numOfElem - 1] = elem;
+			resize(num() + 1);
+			new(&elements[num() - 1])T;
+			elements[num() - 1] = elem;
 		}
 
 		template<class T>
 		inline T & Array<T>::addnew()
 		{
-			resize(numOfElem + 1);
-			new(&elements[numOfElem - 1])T;
-			return elements[numOfElem - 1];
+			resize(num() + 1);
+			new(&elements[num() - 1])T;
+			return elements[num() - 1];
 		}
 
 		template<class T>
-		void Array<T>::removeAt(int index)
+		inline void Array<T>::removeAt(int index)
 		{
-			tales_assert(index >= 0 && index < numOfElem);
+			tales_assert(index >= 0 && index < num());
 
 			T* copyElems = nullptr;
-			if (numOfElem - 1 > 0 && numOfElem - 1 < capSize / 4)
+			if (num() - 1 > 0 && num() - 1 < capSize / 4)
 			{
 				capSize /= 4;
 				int allocSize = capSize * sizeof(T) + (16 - 1) & ~(16 - 1);
@@ -115,7 +116,7 @@ namespace Tales
 					}
 				}
 				
-				int copyCount = numOfElem - index - 1;
+				int copyCount = num() - index - 1;
 				if (copyCount > 0)
 				{
 					if (std::is_pod<T>::value)
@@ -132,25 +133,35 @@ namespace Tales
 					}
 				}
 
-				delete[] elements;
+				delete[] (elements - begin);
 				elements = copyElems;
+				begin = 0;
 			}
 			else
 			{
-				copyElems = elements;
-				int copyCount = numOfElem - index - 1;
-				if (copyCount > 0)
+				if (index == 0)
 				{
-					if (std::is_pod<T>::value)
+					begin++;
+					capSize--;
+					elements++;
+				}
+				else
+				{
+					copyElems = elements;
+					int copyCount = num() - index - 1;
+					if (copyCount > 0)
 					{
-						memcpy(copyElems + index, elements + index + 1, sizeof(T) * copyCount);
-					}
-					else
-					{
-						for (int i = index; i < index + copyCount; ++i)
+						if (std::is_pod<T>::value)
 						{
-							new(&copyElems[i])T;
-							copyElems[i] = elements[i + 1];
+							memcpy(copyElems + index, elements + index + 1, sizeof(T) * copyCount);
+						}
+						else
+						{
+							for (int i = index; i < index + copyCount; ++i)
+							{
+								new(&copyElems[i])T;
+								copyElems[i] = elements[i + 1];
+							}
 						}
 					}
 				}
@@ -162,24 +173,26 @@ namespace Tales
 		template<class T>
 		inline void Array<T>::removeAll()
 		{
-			delete[] elements;
+			delete[] (elements - begin);
 			elements = nullptr;
 			numOfElem = 0;
 			capSize = 0;
+			begin = 0;
 		}
 
 		template<class T>
-		void Array<T>::resize(int size)
+		inline void Array<T>::resize(int size)
 		{
 			if (size > capSize)
 			{
 				capSize = size * 2;
+
 				int allocSize = capSize * sizeof(T) + (16 - 1) & ~(16 - 1);
 				T* newElems = (T*)new char[allocSize];
 
 				if (std::is_pod<T>::value)
-				{
-					memcpy(newElems, elements, sizeof(T) * numOfElem);
+				{					
+					memcpy(newElems, elements, sizeof(T) * num());
 				}
 				else
 				{
@@ -187,13 +200,14 @@ namespace Tales
 					{
 						new(&newElems[i])T;
 
-						if (i < numOfElem)
+						if (i < num())
 							newElems[i] = elements[i];
 					}
 				}
 
-				delete[] elements;
+				delete[] (elements - begin);
 				elements = newElems;
+				begin = 0;
 			}
 
 			numOfElem = size;
@@ -202,7 +216,7 @@ namespace Tales
 		template<class T>
 		inline const T & Array<T>::operator[](int index) const
 		{
-			tales_assert(index >= 0 && index < numOfElem);
+			tales_assert(index >= 0 && index < num());
 			return elements[index];
 		}
 
