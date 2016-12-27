@@ -87,11 +87,60 @@ void testArray()
 		intlist.removeAt(0);
 }
 
+void testMap()
+{
+	Map<String, String> map = { "abc", "bcd", "def" };
+	auto iter = map.getIterator();
+	
+	while (iter.hasNext())
+	{
+		std::cout << iter.next() << std::endl;
+	}
+
+	*map.objectForKey("abc") == "abc";
+}
+
+void testSocket()
+{
+	std::thread* tServer = new std::thread([] {
+		Tales::Net::Socket socket;
+		socket.create();
+		socket.setBlocking(true);
+		socket.bind("0.0.0.0:9999");
+
+		Tales::Net::Socket client = socket.accept();
+		client.setBlocking(true);
+		while (true)
+		{
+			String str = client.recvString();
+			std::cout << str << std::endl;
+		}
+	});
+
+		//std::thread tClient([] {
+			Tales::Net::Socket socketClient;
+			socketClient.create();
+			socketClient.setBlocking(true);
+			socketClient.connect("127.0.0.1:9999");
+
+			for (int i = 0; i < 130000; ++i)
+			{
+				socketClient.send("This is test!");
+				//String str = client.recvString();
+				//std::cout << str << std::endl;
+			}
+		//});
+}
+
 int main()
 {
 	testString();
 
 	testArray();
+
+	testMap();
+
+	testSocket();
 
 	return 0;
 }

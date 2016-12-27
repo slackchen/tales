@@ -21,9 +21,14 @@
 #include <memory>
 #include <cstdlib>
 #include <cstdarg>
+#include <map>
+#include <thread>
 
 // tales classes
 #include "core/object.h"
 #include "core/array.h"
+#include "core/map.h"
 #include "core/string.h"
+
+#include "net/socket.h"
 
