@@ -1,0 +1,66 @@
+# depslib dependency file v1.0
+1484805623 source:/home/adrian/projects/tales/src/core/object.cpp
+	"tales.h"
+
+1484806363 /home/adrian/projects/tales/src/tales.h
+	"platform/win32/platform.h"
+	"platform/linux/platform.h"
+	<cassert>
+	<iostream>
+	<memory>
+	<cstdlib>
+	<cstdarg>
+	<map>
+	<thread>
+	<cstring>
+	"core/object.h"
+	"core/array.h"
+	"core/map.h"
+	"core/string.h"
+	"net/socket.h"
+
+1484805623 /home/adrian/projects/tales/src/platform/win32/platform.h
+	<SDKDDKVer.h>
+	<stdio.h>
+	<tchar.h>
+	<WinSock2.h>
+	<WS2tcpip.h>
+
+1484807135 /home/adrian/projects/tales/src/platform/linux/platform.h
+	<netinet/in.h>
+	<netdb.h>
+	<unistd.h>
+	<sys/socket.h>
+	<sys/ioctl.h>
+	<arpa/inet.h>
+
+1484805623 /home/adrian/projects/tales/src/core/object.h
+
+1484805623 /home/adrian/projects/tales/src/core/array.h
+	"array.inl"
+
+1484813126 /home/adrian/projects/tales/src/core/array.inl
+	"array.h"
+
+1484806040 /home/adrian/projects/tales/src/core/map.h
+	"map.inl"
+
+1484805623 /home/adrian/projects/tales/src/core/map.inl
+	"map.h"
+
+1484805623 /home/adrian/projects/tales/src/core/string.h
+
+1484805623 /home/adrian/projects/tales/src/net/socket.h
+
+1484805623 source:/home/adrian/projects/tales/src/core/string.cpp
+	"tales.h"
+
+1484807156 source:/home/adrian/projects/tales/src/net/socket.cpp
+	"tales.h"
+
+1484805623 source:/home/adrian/projects/tales/src/tales.cpp
+	"tales.h"
+
+1484814398 source:/home/adrian/projects/tales/Test/Test.cpp
+	<tales.h>
+

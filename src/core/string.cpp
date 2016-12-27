@@ -178,7 +178,7 @@ namespace Tales
 			return start == len && cur == searchLen;
 		}
 
-		String String::replace(const String & rep, const String & to)
+		String String::replace(const String & rep, const String & to) const
 		{
 			int count = 0;
 			int pos = 0;
@@ -224,7 +224,7 @@ namespace Tales
 			return std::move(newStr);
 		}
 
-		Array<String> String::split(const String & splitStr)
+		Array<String> String::split(const String & splitStr) const
 		{
 			Array<String> strs;
 
@@ -331,6 +331,16 @@ namespace Tales
 			return NotFound;
 		}
 
+		int String::toInt() const
+		{
+			return atoi(str());
+		}
+
+		float String::toFloat() const
+		{
+			return (float)atof(str());
+		}
+
 		bool String::operator==(const char* str) const
 		{
 			return compare(str);
@@ -355,6 +365,11 @@ namespace Tales
 		{
 			tales_assert(index >= 0 && index < length());
 			return strData[index];
+		}
+
+		bool String::operator<(const String & rhs) const
+		{
+			return strcmp(str(), rhs.str()) < 0;
 		}
 
 		String String::operator+(const String & str)

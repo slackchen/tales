@@ -6,7 +6,7 @@ namespace Tales
 		template <class T>
 		inline Array<T>::Array()
 		{
-			
+
 		}
 
 		template<class T>
@@ -61,7 +61,7 @@ namespace Tales
 		template<class T>
 		inline Array<T> & Array<T>::assign(Array && rhs)
 		{
-			delete[] (elements - begin);
+			delete[] (char*)(elements - begin);
 			elements = rhs.elements;
 			numOfElem = rhs.numOfElem;
 			capSize = rhs.capSize;
@@ -115,7 +115,7 @@ namespace Tales
 						copyElems[i] = elements[i];
 					}
 				}
-				
+
 				int copyCount = num() - index - 1;
 				if (copyCount > 0)
 				{
@@ -133,7 +133,7 @@ namespace Tales
 					}
 				}
 
-				delete[] (elements - begin);
+				delete[] (char*)(elements - begin);
 				elements = copyElems;
 				begin = 0;
 			}
@@ -173,7 +173,7 @@ namespace Tales
 		template<class T>
 		inline void Array<T>::removeAll()
 		{
-			delete[] (elements - begin);
+			delete[] (char*)(elements - begin);
 			elements = nullptr;
 			numOfElem = 0;
 			capSize = 0;
@@ -191,7 +191,7 @@ namespace Tales
 				T* newElems = (T*)new char[allocSize];
 
 				if (std::is_pod<T>::value)
-				{					
+				{
 					memcpy(newElems, elements, sizeof(T) * num());
 				}
 				else
@@ -205,7 +205,7 @@ namespace Tales
 					}
 				}
 
-				delete[] (elements - begin);
+				delete[] (char*)(elements - begin);
 				elements = newElems;
 				begin = 0;
 			}

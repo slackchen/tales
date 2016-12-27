@@ -1,7 +1,6 @@
 // Test.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
 #include <tales.h>
 
 using namespace Tales::Core;
@@ -31,7 +30,7 @@ void testString()
 	String test = fooStr();
 }
 
-Array<String> fooArray()
+Array<String>&& fooArray()
 {
 	return std::move(Array<String>({ "abc", "def", "123" }));
 }
@@ -72,7 +71,7 @@ void testArray()
 	Array<String> test = fooArray();
 
 	test = std::move(Array<String>({ "abc", "def", "123" }));
-	
+
 	String& str = strs.addnew();
 	bool ret = str == "";
 	str = strs.addnew();
@@ -87,11 +86,67 @@ void testArray()
 		intlist.removeAt(0);
 }
 
+void testMap()
+{
+	Map<String, String> map = { "abc", "bcd", "def" };
+	auto iter = map.getIterator();
+
+	while (iter.hasNext())
+	{
+		std::cout << iter.next() << std::endl;
+	}
+
+	*map.objectForKey("abc") == "abc";
+}
+
+void testSocket()
+{
+	std::thread* tServer = new std::thread([] {
+		Tales::Net::Socket socket;
+		socket.create();
+		socket.setBlocking(true);
+		socket.bind("0.0.0.0:9999");
+
+		Tales::Net::Socket client = socket.accept();
+		client.setBlocking(true);
+		int i = 0;
+		while (true)
+		{
+			String str = client.recvString();
+			std::cout << str << i << std::endl;
+			++i;
+
+			if (i >= 130000)
+                break;
+		}
+	});
+
+		//std::thread tClient([] {
+			Tales::Net::Socket socketClient;
+			socketClient.create();
+			socketClient.setBlocking(true);
+			socketClient.connect("127.0.0.1:9999");
+
+			for (int i = 0; i < 130000; ++i)
+			{
+				socketClient.send("This is test!");
+				//String str = client.recvString();
+				//std::cout << str << std::endl;
+			}
+		//});
+
+    tServer->join();
+}
+
 int main()
 {
 	testString();
 
 	testArray();
+
+	testMap();
+
+	testSocket();
 
 	return 0;
 }

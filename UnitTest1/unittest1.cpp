@@ -132,5 +132,52 @@ namespace UnitTest1
 			for (int i = 0; i < 100; ++i)
 				strlist.erase(strlist.begin() + 0);
 		}
+
+		TEST_METHOD(TestMap)
+		{
+			Map<String, String> map = { "abc", "bcd", "def" };
+			auto iter = map.getIterator();
+
+			while (iter.hasNext())
+			{
+				std::cout << iter.next() << std::endl;
+			}
+
+			Assert::IsTrue(*map.objectForKey("abc") == "abc");
+			Assert::IsTrue(*map.objectForKey("bcd") == "bcd");
+			Assert::IsTrue(*map.objectForKey("def") == "def");
+		}
+
+		TEST_METHOD(TestSocket)
+		{
+			std::thread* tServer = new std::thread([] {
+				Tales::Net::Socket socket;
+				socket.create();
+				socket.setBlocking(true);
+				socket.bind("0.0.0.0:9999");
+
+				Tales::Net::Socket client = socket.accept();
+				client.setBlocking(true);
+				while (true)
+				{
+					String str = client.recvString();
+					//std::cout << str << std::endl;
+				}
+			});
+
+			//std::thread tClient([] {
+			Tales::Net::Socket socketClient;
+			socketClient.create();
+			socketClient.setBlocking(true);
+			socketClient.connect("127.0.0.1:9999");
+
+			for (int i = 0; i < 130000; ++i)
+			{
+				socketClient.send("This is test!");
+				//String str = client.recvString();
+				//std::cout << str << std::endl;
+			}
+			//});
+		}
 	};
 }

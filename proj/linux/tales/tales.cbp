@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="tales" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/tales" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/tales" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add directory="../../../src" />
+		</Compiler>
+		<Unit filename="../../../Test/Test.cpp" />
+		<Unit filename="../../../src/core/array.h" />
+		<Unit filename="../../../src/core/array.inl" />
+		<Unit filename="../../../src/core/map.h" />
+		<Unit filename="../../../src/core/map.inl" />
+		<Unit filename="../../../src/core/object.cpp" />
+		<Unit filename="../../../src/core/object.h" />
+		<Unit filename="../../../src/core/string.cpp" />
+		<Unit filename="../../../src/core/string.h" />
+		<Unit filename="../../../src/net/socket.cpp" />
+		<Unit filename="../../../src/net/socket.h" />
+		<Unit filename="../../../src/platform/linux/platform.h" />
+		<Unit filename="../../../src/platform/win32/platform.h" />
+		<Unit filename="../../../src/tales.cpp" />
+		<Unit filename="../../../src/tales.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
