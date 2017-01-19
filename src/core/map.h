@@ -45,11 +45,10 @@ namespace Tales
 			friend class MapIterator<Key, T>;
 
 		private:
-			std::map<Key, T>* map = nullptr;
+			std::map<Key, T> map;
 		};
 
 	}
 }
-
 
 #include "map.inl"

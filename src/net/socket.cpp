@@ -196,6 +196,7 @@ namespace Tales
 			getpeername(sock, (struct sockaddr *)&guest, &guest_len);
 			inet_ntop(AF_INET, &serv.sin_addr, serv_ip, sizeof(serv_ip));
 			inet_ntop(AF_INET, &guest.sin_addr, guest_ip, sizeof(guest_ip));
+
 			return String::format("host %s:%d", serv_ip, ntohs(serv.sin_port));
 		}
 
@@ -210,6 +211,7 @@ namespace Tales
 			getpeername(sock, (struct sockaddr *)&guest, &guest_len);
 			inet_ntop(AF_INET, &serv.sin_addr, serv_ip, sizeof(serv_ip));
 			inet_ntop(AF_INET, &guest.sin_addr, guest_ip, sizeof(guest_ip));
+
 			return String::format("peer %s:%d", guest_ip, ntohs(guest.sin_port));
 		}
 	}

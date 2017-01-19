@@ -109,6 +109,7 @@ void testSocket()
 
 		Tales::Net::Socket client = socket.accept();
 		client.setBlocking(true);
+
 		int i = 0;
 		while (true)
 		{
@@ -120,6 +121,8 @@ void testSocket()
                 break;
 		}
 	});
+
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 
 		//std::thread tClient([] {
 			Tales::Net::Socket socketClient;
@@ -136,6 +139,7 @@ void testSocket()
 		//});
 
     tServer->join();
+
 }
 
 int main()
