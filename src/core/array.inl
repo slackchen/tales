@@ -24,7 +24,7 @@ namespace Tales
 		template <class T>
 		inline Array<T>::Array(const std::initializer_list<T>& list)
 		{
-			resize(list.size());
+			resize((int)list.size());
 			int i = 0;
 			for (const T& elem : list)
 			{

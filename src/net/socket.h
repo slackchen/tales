@@ -41,7 +41,7 @@ namespace Tales
 
 		private:
 			SOCKET sock = -1;
-			struct sockaddr_in sockAddr;
+			sockaddr_in sockAddr;
 		};
 	}
 }

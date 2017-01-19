@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef WIN32
+#if defined _WIN32 || _WIN64
 #define TALES_WIN32
 #elif __linux__
 #define TALES_LINUX
