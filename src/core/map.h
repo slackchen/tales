@@ -42,10 +42,10 @@ namespace Tales
 
 			T& operator[](const Key& key);
 
-			template <class Key, class T> friend class MapIterator;
+			friend class MapIterator<Key, T>;
 
 		private:
-			std::map<Key, T>* map = nullptr;
+			std::map<Key, T> map;
 		};
 
 	}
