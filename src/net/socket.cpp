@@ -62,7 +62,7 @@ namespace Tales
                 ::close(sock);
             #endif
 
-				sock = INVALID_SOCKET;
+			sock = INVALID_SOCKET;
 			}
 		}
 
