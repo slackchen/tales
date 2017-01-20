@@ -33,7 +33,7 @@ void testString()
 	String test = fooStr();
 }
 
-Array<String>&& fooArray()
+Array<String> fooArray()
 {
 	return std::move(Array<String>({ "abc", "def", "123" }));
 }
