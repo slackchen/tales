@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1484805623 source:/home/adrian/projects/tales/src/core/object.cpp
+1484836542 source:/home/adrian/projects/tales/src/core/object.cpp
 	"tales.h"
 
 1484819722 /home/adrian/projects/tales/src/tales.h
@@ -36,10 +36,10 @@
 
 1484805623 /home/adrian/projects/tales/src/core/object.h
 
-1484805623 /home/adrian/projects/tales/src/core/array.h
+1484834918 /home/adrian/projects/tales/src/core/array.h
 	"array.inl"
 
-1484819722 /home/adrian/projects/tales/src/core/array.inl
+1484837003 /home/adrian/projects/tales/src/core/array.inl
 	"array.h"
 
 1484818407 /home/adrian/projects/tales/src/core/map.h
@@ -52,7 +52,7 @@
 
 1484819722 /home/adrian/projects/tales/src/net/socket.h
 
-1484805623 source:/home/adrian/projects/tales/src/core/string.cpp
+1484836829 source:/home/adrian/projects/tales/src/core/string.cpp
 	"tales.h"
 
 1484818715 source:/home/adrian/projects/tales/src/net/socket.cpp
@@ -61,6 +61,6 @@
 1484805623 source:/home/adrian/projects/tales/src/tales.cpp
 	"tales.h"
 
-1484824024 source:/home/adrian/projects/tales/Test/Test.cpp
+1484825001 source:/home/adrian/projects/tales/Test/Test.cpp
 	<tales.h>
 

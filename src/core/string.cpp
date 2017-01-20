@@ -37,7 +37,7 @@ namespace Tales
 
 			delete[] strData;
 			numOfStr = 0;
-			int allocSize = size + 1 + (4 - 1) & ~(4 - 1);
+			int allocSize = (size + 1 + (4 - 1)) & ~(4 - 1);
 			strData = new char[allocSize];
 			strData[0] = 0;
 		}

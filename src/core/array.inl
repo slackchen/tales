@@ -1,4 +1,5 @@
 #include "array.h"
+
 namespace Tales
 {
 	namespace Core
@@ -84,7 +85,7 @@ namespace Tales
 		}
 
 		template<class T>
-		inline T & Array<T>::addnew()
+		T& Array<T>::addnew()
 		{
 			resize(num() + 1);
 			new(&elements[num() - 1])T;
@@ -100,7 +101,7 @@ namespace Tales
 			if (num() - 1 > 0 && num() - 1 < capSize / 4)
 			{
 				capSize /= 4;
-				int allocSize = capSize * sizeof(T) + (16 - 1) & ~(16 - 1);
+				int allocSize = (capSize * sizeof(T) + (16 - 1)) & ~(16 - 1);
 				copyElems = (T*)new char[allocSize];
 
 				if (std::is_pod<T>::value)
@@ -187,7 +188,7 @@ namespace Tales
 			{
 				capSize = size * 2;
 
-				int allocSize = capSize * sizeof(T) + (16 - 1) & ~(16 - 1);
+				int allocSize = (capSize * sizeof(T) + (16 - 1)) & ~(16 - 1);
 				T* newElems = (T*)new char[allocSize];
 
 				if (std::is_pod<T>::value)

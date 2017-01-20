@@ -14,7 +14,7 @@ namespace Tales
 
 		void * Object::operator new(size_t size)
 		{
-			int allocSize = size + (16 - 1) & ~(16 - 1);
+			int allocSize = (size + (16 - 1)) & ~(16 - 1);
 			return malloc(allocSize);
 		}
 		void * Object::operator new(size_t size, void * addr)

@@ -30,7 +30,7 @@ namespace Tales
 			Socket accept();
 
 			void send(const String& str);
-			String recvString();
+			String recvString(int len = 1024);
 
 			int send(char* buf, int offset, int count);
 			int recv(char* buf, int offset, int count);
@@ -42,6 +42,7 @@ namespace Tales
 		private:
 			SOCKET sock = -1;
 			sockaddr_in sockAddr;
+            Protocol protocol;
 		};
 	}
 }

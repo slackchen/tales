@@ -15,6 +15,8 @@
 #include <cassert>
 #define tales_assert assert
 
+#define TALES_UNUSED(x) ((void)(x))
+
 #ifndef TALES_EXPORT
 #define TALES_API //__declspec(dllimport)
 #else

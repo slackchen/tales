@@ -16,9 +16,12 @@ void testString()
 	String str2 = "Abc";
 
 	bool ret = str.compareLowercase(str2);
+    TALES_UNUSED(ret);
 
 	int pos = str.indexOf("abc");
+    TALES_UNUSED(pos);
 	int pos2 = str.lastIndexOf("abce");
+    TALES_UNUSED(pos2);
 
 	str = String::format("This is a %d test %s!", 8, "joke");
 	str = str.substr(2);
@@ -74,6 +77,7 @@ void testArray()
 
 	String& str = strs.addnew();
 	bool ret = str == "";
+    TALES_UNUSED(ret);
 	str = strs.addnew();
 
 	strs = String("abc,def,123").split(",");
@@ -101,20 +105,22 @@ void testMap()
 
 void testSocket()
 {
-	std::thread* tServer = new std::thread([] {
+	std::thread tServer([] {
 		Tales::Net::Socket socket;
-		socket.create();
+		socket.create(Tales::Net::Socket::Protocol::Tcp);
 		socket.setBlocking(true);
 		socket.bind("0.0.0.0:9999");
 
 		Tales::Net::Socket client = socket.accept();
 		client.setBlocking(true);
 
+        //Tales::Net::Socket& client = socket;
+
 		int i = 0;
 		while (true)
 		{
-			String str = client.recvString();
-			std::cout << str << i << std::endl;
+			String str = client.recvString(14);
+			std::cout << str << i + 1 << std::endl;
 			++i;
 
 			if (i >= 130000)
@@ -126,7 +132,7 @@ void testSocket()
 
 		//std::thread tClient([] {
 			Tales::Net::Socket socketClient;
-			socketClient.create();
+			socketClient.create(Tales::Net::Socket::Protocol::Tcp);
 			socketClient.setBlocking(true);
 			socketClient.connect("127.0.0.1:9999");
 
@@ -138,7 +144,7 @@ void testSocket()
 			}
 		//});
 
-    tServer->join();
+    tServer.join();
 
 }
 

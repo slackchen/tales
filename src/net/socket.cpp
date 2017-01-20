@@ -39,6 +39,8 @@ namespace Tales
 		{
 			close();
 
+            this->protocol = protocol;
+            
 			if (protocol == Protocol::Tcp)
 				sock = socket(AF_INET, SOCK_STREAM, 0);
 			else if (protocol == Protocol::Udp)
@@ -87,9 +89,12 @@ namespace Tales
 				addrSrv.sin_addr.s_addr = inet_addr(inet_ntoa(*(struct in_addr*)hostent->h_addr_list[0]));
 			}
 
-			int ret = ::connect(sock, (sockaddr*)&addrSrv, sizeof(sockaddr));
-			if (ret == SOCKET_ERROR)
-				return false;
+            if (protocol == Protocol::Tcp)
+            {                
+                int ret = ::connect(sock, (sockaddr*)&addrSrv, sizeof(sockaddr));
+                if (ret == SOCKET_ERROR)
+                    return false;            
+            }
 
 			sockAddr = addrSrv;
 
@@ -112,19 +117,26 @@ namespace Tales
 			sin.sin_addr.s_addr = addr == "0.0.0.0" ? INADDR_ANY : inet_addr(addr.str());
 			if (
 				!setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&on, sizeof(on)) &&
-				!::bind(sock, (struct sockaddr *)&sin, sizeof(sin)) &&
-				(listen(sock, SOMAXCONN) == 0)
+				!::bind(sock, (struct sockaddr *)&sin, sizeof(sin))
 				)
 			{
-				sockAddr = sin;
-				return true;
+                if (protocol == Protocol::Tcp && (listen(sock, SOMAXCONN) == 0))
+                {
+                    sockAddr = sin;
+                    return true;
+                }
+                else if (protocol == Protocol::Udp)
+                {
+                    sockAddr = sin;
+                    return true;
+                }
 			}
 
 			return false;
 		}
 
 		Socket Socket::accept()
-		{
+		{               
 			struct sockaddr_in sin;
 			socklen_t addlen = sizeof(sin);
 			SOCKET s = ::accept(sock, (struct sockaddr*)&sin, &addlen);
@@ -148,18 +160,14 @@ namespace Tales
 				offset += send((char*)str.str(), offset, count - offset);
 		}
 
-		String Socket::recvString()
+		String Socket::recvString(int len)
 		{
 			char buf[1024];
 			int offset = 0;
 
-			while (offset < 1024)
+			while (offset < len)
 			{
-				offset += recv(buf, offset, 1);
-				if (buf[offset - 1] == 0)
-				{
-					break;
-				}
+				offset += recv(buf, offset, len - offset);
 			}
 
 			return std::move(String(buf));
@@ -167,11 +175,18 @@ namespace Tales
 
 		int Socket::send(char * buf, int offset, int count)
 		{
+            if (protocol == Protocol::Udp)
+                return ::sendto(sock, buf + offset, count, 0, (const sockaddr*)&sockAddr, sizeof(sockAddr));
+            
 			return ::send(sock, buf + offset, count, 0);
 		}
 
 		int Socket::recv(char * buf, int offset, int count)
 		{
+            socklen_t addrLen = sizeof(sockAddr);
+            if (protocol == Protocol::Udp)
+                return ::recvfrom(sock, buf + offset, count, 0, (sockaddr*)&sockAddr, &addrLen);
+
 			return ::recv(sock, buf + offset, count, 0);
 		}
 

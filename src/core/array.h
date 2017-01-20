@@ -7,7 +7,7 @@ namespace Tales
 		template <class T>
 		class Array : public Object
 		{
-		public:
+		public:            
 			Array();
 			Array(const Array& rhs);
 			Array(Array&& rhs);
