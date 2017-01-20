@@ -1,0 +1,1 @@
+./Debug/src_tales.cpp.o ./Debug/core_object.cpp.o ./Debug/core_string.cpp.o ./Debug/net_socket.cpp.o ./Debug/Test_Test.cpp.o
