@@ -105,44 +105,53 @@ void testMap()
 
 void testSocket()
 {
-	std::thread tServer([] {
+	bool stop = false;
+	std::thread tServer([&stop] {
 		Tales::Net::Socket socket;
-		socket.create(Tales::Net::Socket::Protocol::Tcp);
+		socket.create(Tales::Net::Socket::Protocol::Udp);
 		socket.setBlocking(true);
 		socket.bind("0.0.0.0:9999");
+		//socket.connect("localhost:9999");
 
-		Tales::Net::Socket client = socket.accept();
-		client.setBlocking(true);
+		//Tales::Net::Socket client = socket.accept();
+		//client.setBlocking(true);
 
         //Tales::Net::Socket& client = socket;
 
 		int i = 0;
 		while (true)
 		{
-			String str = client.recvString(14);
+			String str = String("[recv]") + socket.recvString(14);
 			std::cout << str << i + 1 << std::endl;
 			++i;
 
 			if (i >= 130000)
                 break;
 		}
+
+		stop = true;
 	});
 
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 
 		//std::thread tClient([] {
 			Tales::Net::Socket socketClient;
-			socketClient.create(Tales::Net::Socket::Protocol::Tcp);
+			socketClient.create(Tales::Net::Socket::Protocol::Udp);
 			socketClient.setBlocking(true);
-			socketClient.connect("127.0.0.1:9999");
+			socketClient.bind("0.0.0.0:9999");
+			socketClient.connect("localhost:9999");
 
-			for (int i = 0; i < 130000; ++i)
+			for (int i = 0; /*i < 130000*/; ++i)
 			{
 				socketClient.send("This is test!");
 				//String str = client.recvString();
 				//std::cout << str << std::endl;
+				if (stop)
+					break;
 			}
 		//});
+
+			std::cout << "send finished" << std::endl;
 
     tServer.join();
 

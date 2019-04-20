@@ -170,15 +170,27 @@ namespace Tales
 				offset += recv(buf, offset, len - offset);
 			}
 
-			return std::move(String(buf));
+			return String(buf);
 		}
 
 		int Socket::send(char * buf, int offset, int count)
 		{
-            if (protocol == Protocol::Udp)
-                return ::sendto(sock, buf + offset, count, 0, (const sockaddr*)&sockAddr, sizeof(sockAddr));
+			int ret = 0;
+			if (protocol == Protocol::Udp)
+			{
+				ret = ::sendto(sock, buf + offset, count, 0, (const sockaddr*)&sockAddr, sizeof(sockAddr));
+			}
+			else
+			{
+				ret = ::send(sock, buf + offset, count, 0);
+			}
             
-			return ::send(sock, buf + offset, count, 0);
+			if (ret == SOCKET_ERROR)
+			{
+				std::cout << "sendto SOCKET_ERROR" << std::endl;
+			}
+
+			return ret;
 		}
 
 		int Socket::recv(char * buf, int offset, int count)
